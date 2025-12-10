@@ -1,5 +1,3 @@
-That's a lot of topics! I'll provide a detailed explanation of each topic, but I'll have to break it up into sections. Let's get started!
-
 Components
 
 Function-Based Components
