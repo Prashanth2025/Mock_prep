@@ -1,728 +1,1065 @@
-1. Node.js
+# Node.js & Express.js - Deep Explanation with Simple Examples
 
-- Detailed Explanation:
-  Node.js is a JavaScript runtime environment built on Google’s V8 engine. Unlike browsers, which only allow JS for client-side scripting, Node.js lets developers run JS on the server side. It uses an event-driven, non-blocking I/O model, which makes it lightweight and efficient for building scalable applications.
-- Single-threaded: Node.js runs on a single thread but uses LibUV to handle asynchronous tasks in the background.
-- Use cases: REST APIs, real-time apps (chat, streaming), microservices, CLI tools.
-- Why interviewers ask: To test if you understand why Node.js is popular for modern web development.
-- Syntax:
-  node app.js
+## **1. Node.js**
+**Interview Question:** "What is Node.js and why is it popular?"
 
-- Example:
-  // app.js
-  console.log("Hello from Node.js");
+**Deep Explanation:** Node.js is a **JavaScript runtime** built on Chrome's V8 engine. It lets you run JavaScript outside browsers on servers. It uses an **event-driven, non-blocking I/O model** which makes it perfect for I/O-heavy applications (APIs, real-time apps, microservices).
 
-2. REPL (Read-Eval-Print Loop)
+**Key Points:**
+- Single-threaded but handles concurrency through event loop
+- Uses libuv for async operations
+- NPM has 2+ million packages
+- Perfect for real-time applications
 
-- Detailed Explanation:
-  REPL is an interactive shell bundled with Node.js. It allows developers to test snippets of code quickly without creating a file.
-- Read: Accepts user input.
-- Eval: Evaluates the input.
-- Print: Prints the result.
-- Loop: Waits for the next input.
-- Why interviewers ask: To check if you know how to debug/test code quickly in Node.
-- Syntax:
-  node
+**Simple Example:**
+```javascript
+// Create a simple HTTP server
+const http = require('http');
 
-- Example:
-  > let x = 5;
-  > x \* 2
-  > 10
+const server = http.createServer((req, res) => {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello from Node.js!');
+});
 
-3. LibUV
+server.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
+```
 
-- Detailed Explanation:
-  LibUV is a C library that powers Node.js’s asynchronous capabilities. It manages the event loop, thread pool, and non-blocking I/O.
-- Handles file system operations, DNS lookups, networking.
-- Provides cross-platform support (Windows, Linux, macOS).
-- Why interviewers ask: To see if you understand what makes Node.js async and scalable.
+---
 
-4. Modules
+## **2. REPL (Read-Eval-Print Loop)**
+**Interview Question:** "What is REPL in Node.js?"
 
-- Detailed Explanation:
-  Modules are reusable blocks of code in Node.js. They help organize code into smaller, manageable pieces.
-- Types: Core modules, npm modules, custom modules.
-- Why interviewers ask: To check if you can structure projects properly.
-- Syntax:
-  const fs = require('fs'); // importing core module
+**Deep Explanation:** REPL is an interactive shell where you can execute JavaScript code without creating files. It's useful for testing, debugging, and learning.
 
-- Example:
-  // math.js
-  exports.add = (a,b) => a+b;
+**Simple Example:**
+```bash
+$ node
+> 2 + 2
+4
+> const name = "John"
+> console.log(`Hello ${name}`)
+Hello John
+> .exit
+```
+
+---
+
+## **3. LibUV**
+**Interview Question:** "What is libuv and why is it important?"
+
+**Deep Explanation:** LibUV is a C library that provides Node.js with:
+- Event loop implementation
+- Thread pool for expensive operations
+- Asynchronous I/O operations
+- Cross-platform compatibility
+
+**Key Points:**
+- Handles file operations, DNS, networking
+- Manages thread pool (default 4 threads)
+- Makes Node.js non-blocking
+
+**Simple Example:**
+```javascript
+// File operations use libuv's thread pool
+const fs = require('fs');
+
+// This async operation uses libuv
+fs.readFile('file.txt', 'utf8', (err, data) => {
+    console.log(data);
+});
+```
+
+---
+
+## **4. Modules**
+**Interview Question:** "How do modules work in Node.js?"
+
+**Deep Explanation:** Modules are reusable code blocks. Node.js uses CommonJS module system (require/module.exports). Each file is treated as a separate module.
+
+**Simple Example:**
+```javascript
+// math.js
+exports.add = (a, b) => a + b;
+exports.multiply = (a, b) => a * b;
 
 // app.js
 const math = require('./math');
-console.log(math.add(2,3));
+console.log(math.add(5, 3));      // 8
+console.log(math.multiply(5, 3)); // 15
+```
 
-5. CommonJS
+---
 
-- Detailed Explanation:
-  CommonJS is the module system used in Node.js. It uses require() to import and module.exports to export.
-- Why important: Before ES6 modules (import/export), CommonJS was the standard.
-- Why interviewers ask: To test if you know the difference between CommonJS and ES Modules.
-- Example:
-  // utils.js
-  module.exports = {
-  greet: name => `Hello ${name}`
-  };
+## **5. CommonJS**
+**Interview Question:** "Explain CommonJS module system"
 
-// app.js
-const utils = require('./utils');
-console.log(utils.greet("Prashanth"));
+**Deep Explanation:** CommonJS is the module system Node.js uses. It's synchronous (loads modules when require() is called). Modules are cached after first load.
 
-6. Core Modules
-
-- Detailed Explanation:
-  Node.js ships with built-in modules (no need to install).
-- Examples:
-- fs → File system operations
-- http → Create servers
-- path → Handle file paths
-- os → System info
-- Why interviewers ask: To check if you can use built-in tools instead of reinventing the wheel.
-- Example:
-  const os = require('os');
-  console.log("Platform:", os.platform());
-  console.log("Free Memory:", os.freemem());
-
-7. NPM Modules
-
-- Detailed Explanation:
-  NPM (Node Package Manager) is the default package manager for Node.js. It allows developers to install, share, and manage external libraries.
-- Local vs Global: Local modules are installed inside a project (node_modules), while global modules are installed system-wide.
-- Semantic Versioning: NPM uses major.minor.patch (e.g., 1.2.3) to track versions.
-- Why interviewers ask: To check if you know how to manage dependencies in real-world projects.
-- Syntax:
-  npm install lodash
-  npm install express --save
-  npm install nodemon -g
-
-- Example:
-  const _ = require('lodash');
-  console.log(_.capitalize("prashanth")); // Output: Prashanth
-
-8. Custom Modules
-
-- Detailed Explanation:
-  Custom modules are user-defined modules that encapsulate logic for reuse. They help in code organization and maintainability.
-- Exporting: Use module.exports to expose functionality.
-- Importing: Use require() to load the module.
-- Why interviewers ask: To test if you can structure large applications into smaller files.
-- Example:
-  // greet.js
-  module.exports = function(name){
-  return `Hello, ${name}`;
-  };
-
-// app.js
-const greet = require('./greet');
-console.log(greet("Prashanth"));
-
-9. ReadLine
-
-- Detailed Explanation:
-  The readline module provides an interface for reading data from a readable stream (like process.stdin). Useful for CLI applications.
-- Supports synchronous user input.
-- Can be combined with async logic for interactive tools.
-- Why interviewers ask: To see if you know how to build command-line utilities.
-- Example:
-  const readline = require('readline');
-  const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-  });
-
-rl.question("Enter your age: ", age => {
-console.log(`You are ${age} years old`);
-rl.close();
-});
-
-10. File System Module
-
-- Detailed Explanation:
-  The fs module allows interaction with the file system. It supports both synchronous and asynchronous methods.
-- Common operations: Read, write, append, delete, rename.
-- Why interviewers ask: To test if you can handle files in Node.js.
-- Example:
-  const fs = require('fs');
-
-// Asynchronous read
-fs.readFile('test.txt','utf8',(err,data)=>{
-if(err) throw err;
-console.log(data);
-});
-
-// Synchronous read
-const content = fs.readFileSync('test.txt','utf8');
-console.log(content);
-
-11. Write
-
-- Detailed Explanation:
-  Writing files in Node.js can be done using fs.writeFile (async) or fs.writeFileSync (sync).
-- If the file doesn’t exist, it creates one.
-- If it exists, it overwrites content unless you use fs.appendFile.
-- Why interviewers ask: To check if you understand persistence in Node.js.
-- Example:
-  const fs = require('fs');
-
-// Asynchronous write
-fs.writeFile('output.txt','Hello World',(err)=>{
-if(err) throw err;
-console.log("File written successfully!");
-});
-
-// Append
-fs.appendFile('output.txt','\nNew Line',(err)=>{
-if(err) throw err;
-console.log("Line appended!");
-});
-
-12. Async
-
-- Detailed Explanation:
-  Asynchronous programming is the backbone of Node.js. Instead of blocking execution, async operations allow other tasks to run while waiting for I/O.
-- Callbacks: Traditional way of handling async tasks.
-- Promises: Cleaner way to handle async results.
-- Async/Await: Modern syntax for writing async code that looks synchronous.
-- Why interviewers ask: To test if you can handle concurrency and avoid callback hell.
-- Example (Callback):
-  fs.readFile('data.txt','utf8',(err,data)=>{
-  if(err) throw err;
-  console.log(data);
-  });
-
-- Example (Promise):
-  const fetchData = () => Promise.resolve("Data loaded");
-  fetchData().then(console.log);
-
-- Example (Async/Await):
-  async function getData(){
-  return "Data loaded";
-  }
-  (async ()=>{
-  const result = await getData();
-  console.log(result);
-  })();
-
-13. Phases of Event Loop
-
-- Detailed Explanation:
-  The event loop is the mechanism that allows Node.js to perform non-blocking I/O operations. It continuously checks for tasks and executes them in phases.
-- Phases:
-- Timers → Executes callbacks scheduled by setTimeout and setInterval.
-- Pending Callbacks → Executes I/O callbacks deferred from the previous cycle.
-- Idle/Prepare → Internal use, prepares for the poll phase.
-- Poll → Retrieves new I/O events, executes related callbacks.
-- Check → Executes setImmediate() callbacks.
-- Close Callbacks → Executes close events like socket.on('close').
-- Why interviewers ask: To test if you understand Node’s async nature and scheduling.
-- Example:
-  setTimeout(()=>console.log("Timer phase"),0);
-  setImmediate(()=>console.log("Check phase"));
-  console.log("Main thread");
-
-  14. Node Architecture
-
-- Detailed Explanation:
-  Node.js architecture is single-threaded, built on the event loop and LibUV.
-- Components:
-- V8 Engine → Executes JavaScript.
-- LibUV → Handles async I/O and thread pool.
-- Event Loop → Manages execution order.
-- C++ Bindings → Bridge between JS and system calls.
-- Why interviewers ask: To check if you understand why Node.js is scalable despite being single-threaded.
-- Diagram (conceptual):
-  JS Code → V8 Engine → Event Loop → LibUV → OS Resources
-
-  15. ThreadPool
-
-- Detailed Explanation:
-  Node.js uses a thread pool (default size: 4) managed by LibUV for expensive operations.
-- Tasks handled: File system I/O, DNS lookups, crypto operations.
-- Configurable: Can be increased using UV_THREADPOOL_SIZE.
-- Why interviewers ask: To see if you know how Node handles heavy tasks without blocking the main thread.
-- Example:
-  UV_THREADPOOL_SIZE=8 node app.js
-
-  16. Express.js
-
-- Detailed Explanation:
-  Express.js is a minimal and flexible web framework for Node.js. It simplifies server creation and routing.
-- Features: Middleware support, routing, template engines, REST API support.
-- Why interviewers ask: To check if you can build scalable web apps using Express.
-- Syntax:
-  const express = require('express');
-  const app = express();
-
-app.get('/', (req,res)=>res.send("Hello Express"));
-app.listen(3000, ()=>console.log("Server running"));
-
-17. Applications of Express
-
-- Detailed Explanation:
-  Express is widely used for:
-- Building REST APIs.
-- Serving static files.
-- Integrating with template engines (EJS, Pug).
-- Handling middleware (logging, authentication).
-- Why interviewers ask: To check if you know practical use cases of Express.
-- Example:
-  // REST API with Express
-  app.get('/users',(req,res)=>{
-  res.json([{id:1,name:"Prashanth"}]);
-  });
-
-18. Request Object in Express
-
-- Detailed Explanation:
-  The req object represents the HTTP request. It contains details about the client’s request.
-- Common properties:
-- req.query → Query parameters (?name=Prashanth).
-- req.params → Route parameters (/user/:id).
-- req.body → Request body (POST data).
-- req.headers → Request headers.
-- Why interviewers ask: To test if you can extract client data properly
-
-- Example:
-  app.get('/user/:id',(req,res)=>{
-  console.log("Params:", req.params.id);
-  console.log("Query:", req.query.name);
-  res.send("Request received");
-  });
-
-19. Properties of Request Object
-
-- Detailed Explanation:
-  The req object in Express represents the incoming HTTP request. It contains all the information sent by the client.
-- Key Properties:
-- req.query → Holds query string parameters (/search?name=Prashanth).
-- req.params → Holds route parameters (/user/:id).
-- req.body → Holds POST request body (requires middleware like express.json()).
-- req.headers → Contains request headers (like Content-Type, Authorization).
-- req.method → HTTP method used (GET, POST, etc.).
-- req.url → The full URL of the request.
-- Why interviewers ask: To check if you can extract client data properly in APIs.
-- Example:
-  app.get('/user/:id',(req,res)=>{
-  console.log("Params:", req.params.id);
-  console.log("Query:", req.query.name);
-  console.log("Headers:", req.headers);
-  res.send("Request processed");
-  });
-
-20. Response Object in Express
-
-- Detailed Explanation:
-  The res object represents the HTTP response that the server sends back to the client.
-- Key Methods:
-- res.send() → Sends a response (string, object, buffer).
-- res.json() → Sends JSON data.
-- res.status() → Sets HTTP status code.
-- res.redirect() → Redirects to another URL.
-- res.sendFile() → Sends a file as response.
-- Why interviewers ask: To test if you know how to send different types of responses.
-- Example:
-  app.get('/info',(req,res)=>{
-  res.status(200).json({message:"Success", user:"Prashanth"});
-  });
-
-21. Properties of Response Object
-
-- Detailed Explanation:
-  The res object has properties and methods to control the response.
-- res.headersSent → Boolean indicating if headers are already sent.
-- res.locals → Stores local variables scoped to the request.
-- res.app → Reference to the Express app instance.
-- Why interviewers ask: To check if you understand response lifecycle.
-- Example:
-  app.use((req,res,next)=>{
-  res.locals.user = "Prashanth";
-  next();
-  });
-
-app.get('/',(req,res)=>{
-res.send(`Hello ${res.locals.user}`);
-});
-
-22. HTTP
-
-- Detailed Explanation:
-  HTTP (HyperText Transfer Protocol) is the foundation of communication on the web.
-- Request: Sent by client (browser, app).
-- Response: Sent by server.
-- Stateless: Each request is independent.
-- Why interviewers ask: To check if you understand the protocol behind APIs.
-- Example (basic HTTP request):
-  GET /home HTTP/1.1
-  Host: localhost:3000
-
-23. URL
-
-- Detailed Explanation:
-  A URL (Uniform Resource Locator) identifies resources on the web.
-- Components:
-- Scheme → http or https.
-- Host → Domain name (example.com).
-- Port → Optional (:3000).
-- Path → Resource location (/users).
-- Query String → Extra parameters (?id=10).
-- Why interviewers ask: To check if you can break down and use URLs in routing.
-- Example:
-  https://example.com:3000/users?id=10
-
-24. API
-
-- Detailed Explanation:
-  API (Application Programming Interface) is a set of rules that allows software components to communicate.
-- Types: REST, SOAP, GraphQL.
-- Why interviewers ask: To check if you understand how systems interact.
-- In Node.js/Express: APIs are built using routes and middleware.
-- Example:
-  app.get('/api/products',(req,res)=>{
-  res.json([{id:1,name:"Laptop"},{id:2,name:"Phone"}]);
-  });
-
-25. REST API
-
-- Detailed Explanation:
-  REST (Representational State Transfer) is an architectural style for designing APIs. It uses HTTP methods to perform CRUD operations on resources.
-- Principles:
-- Stateless → Each request is independent.
-- Resource-based → Everything is treated as a resource (users, products).
-- Uniform Interface → Consistent use of HTTP methods.
-- Client-Server Separation → Client handles UI, server handles data.
-- Why interviewers ask: To check if you understand modern API design.
-- Example:
-  // REST API with Express
-  app.get('/users',(req,res)=>res.json([{id:1,name:"Prashanth"}]));
-  app.post('/users',(req,res)=>res.status(201).send("User created"));
-  app.put('/users/:id',(req,res)=>res.send("User updated"));
-  app.delete('/users/:id',(req,res)=>res.send("User deleted"));
-
-26. HTTP Headers
-
-- Detailed Explanation:
-  HTTP headers are metadata sent with requests and responses. They provide additional information about the request/response.
-- Types: General, Request, Response, Entity headers.
-- Examples:
-- Content-Type → Specifies format of body.
-- Authorization → Used for authentication.
-- Cache-Control → Controls caching behavior.
-- Why interviewers ask: To test if you know how to control communication between client and server.
-- Example:
-  app.get('/data',(req,res)=>{
-  res.set('Content-Type','application/json');
-  res.send({msg:"Hello"});
-  });
-
-27. Types of HTTP Headers
-
-- Detailed Explanation:
-- General Headers → Apply to both request and response (Date, Connection).
-- Request Headers → Sent by client (Accept, Authorization).
-- Response Headers → Sent by server (Server, Set-Cookie).
-- Entity Headers → Describe body content (Content-Type, Content-Length).
-- Why interviewers ask: To check if you can categorize headers correctly.
-
-28. Content-Type
-
-- Detailed Explanation:
-  The Content-Type header specifies the media type of the resource. It tells the client how to interpret the body.
-- Examples:
-- application/json → JSON data.
-- text/html → HTML document.
-- multipart/form-data → File uploads.
-- Why interviewers ask: To test if you know how to send/receive correct data formats.
-- Example:
-  app.post('/submit',(req,res)=>{
-  res.setHeader('Content-Type','application/json');
-  res.send(JSON.stringify({status:"ok"}));
-  });
-
-29. Common Content-Type Values
-
-- Detailed Explanation:
-- application/json → JSON data.
-- text/html → HTML content.
-- text/plain → Plain text.
-- multipart/form-data → Used for file uploads.
-- application/x-www-form-urlencoded → Form submissions.
-- Why interviewers ask: To check if you know which content type to use in APIs.
-
-30. HTTP Methods
-
-- Detailed Explanation:
-  HTTP methods define the type of operation performed on a resource.
-- GET → Retrieve data.
-- POST → Create new resource.
-- PUT → Update existing resource (replace).
-- PATCH → Update partially.
-- DELETE → Remove resource.
-- HEAD → Retrieve headers only.
-- OPTIONS → Check supported methods.
-- Why interviewers ask: To test if you can map CRUD operations to HTTP methods.
-- Example:
-  app.get('/products',(req,res)=>res.send("Fetch products"));
-  app.post('/products',(req,res)=>res.send("Create product"));
-  app.put('/products/:id',(req,res)=>res.send("Update product"));
-  app.delete('/products/:id',(req,res)=>res.send("Delete product"));
-
-31. HTTP Status Codes
-
-- Detailed Explanation:
-  HTTP status codes are 3-digit numbers returned by the server to indicate the result of a request. They are grouped into categories:
-- 1xx (Informational) → Request received, continuing process.
-- 2xx (Success) → Request successfully processed.
-- 200 OK → Successful GET.
-- 201 Created → Resource created (POST).
-- 3xx (Redirection) → Further action needed.
-- 301 Moved Permanently, 302 Found.
-- 4xx (Client Error) → Problem with client request.
-- 400 Bad Request, 401 Unauthorized, 404 Not Found.
-- 5xx (Server Error) → Problem with server.
-- 500 Internal Server Error, 503 Service Unavailable.
-- Why interviewers ask: To check if you can handle errors gracefully in APIs.
-- Example:
-  app.get('/data',(req,res)=>{
-  res.status(200).send("Success");
-  });
-
-app.post('/data',(req,res)=>{
-res.status(201).send("Resource created");
-});
-
-app.get('/error',(req,res)=>{
-res.status(404).send("Not Found");
-});
-
-32. Express Middleware
-
-- Detailed Explanation:
-  Middleware are functions that execute during the request-response cycle. They can modify req and res, perform logging, authentication, or error handling.
-- Types: Application-level, built-in, third-party, error-handling.
-- Execution order: Middleware runs in the order they are defined.
-- Why interviewers ask: To test if you can structure Express apps with reusable logic.
-- Syntax:
-  app.use((req,res,next)=>{
-  console.log("Middleware executed");
-  next(); // pass control to next middleware
-  });
-
-33. Advantages of Middleware Functions
-
-- Detailed Explanation:
-  Middleware provides:
-- Code reusability → Common logic reused across routes.
-- Separation of concerns → Keeps routes clean.
-- Flexibility → Can modify request/response objects.
-- Error handling → Centralized error management.
-- Security → Authentication and authorization checks.
-- Why interviewers ask: To check if you understand why middleware is essential in Express.
-
-34. Application-Level Middleware
-
-- Detailed Explanation:
-  Middleware bound to the entire application or specific routes.
-- Global middleware → Runs for all routes.
-- Route-specific middleware → Runs only for certain routes.
-- Why interviewers ask: To see if you can apply middleware selectively.
-- Example:
-  // Global middleware
-  app.use((req,res,next)=>{
-  console.log("Global middleware");
-  next();
-  });
-
-// Route-specific middleware
-app.use('/user',(req,res,next)=>{
-console.log("User route middleware");
-next();
-});
-
-35. Built-in Middleware
-
-- Detailed Explanation:
-  Express provides built-in middleware for common tasks:
-- express.json() → Parse JSON bodies.
-- express.urlencoded() → Parse URL-encoded bodies.
-- express.static() → Serve static files.
-- Why interviewers ask: To check if you know how to use built-in tools instead of external packages.
-
-36. express.static Middleware
-
-- Detailed Explanation:
-  Used to serve static files (HTML, CSS, JS, images) from a directory.
-- Default behavior: Serves files relative to the directory specified.
-- Why interviewers ask: To test if you can serve frontend assets with Express.
-- Example:
-  // Serve files from "public" folder
-  app.use(express.static('public'));
-
-// Now /public/style.css can be accessed at http://localhost:3000/style.css
-
-37. express.json Middleware
-
-- Detailed Explanation:
-  express.json() is a built-in middleware in Express that parses incoming requests with JSON payloads. It populates req.body with the parsed object.
-- Use case: Handling API requests where the client sends JSON data.
-- Why interviewers ask: To check if you know how to handle request bodies in REST APIs.
-- Example:
-  const express = require('express');
-  const app = express();
-
-app.use(express.json()); // enables JSON parsing
-
-app.post('/user',(req,res)=>{
-console.log(req.body); // parsed JSON
-res.send("User data received");
-});
-
-38. express.urlencoded() Middleware
-
-- Detailed Explanation:
-  express.urlencoded() parses incoming requests with URL-encoded payloads (like form submissions).
-- Options:
-- extended: true → Uses qs library for rich objects.
-- extended: false → Uses querystring library (simpler).
-- Why interviewers ask: To check if you can handle form data properly.
-- Example:
-  app.use(express.urlencoded({extended:true}));
-
-app.post('/form',(req,res)=>{
-console.log(req.body); // parsed form data
-res.send("Form submitted");
-});
-
-39. Third-Party Middleware
-
-- Detailed Explanation:
-  Middleware created by the community and installed via npm. They extend Express functionality.
-- Examples:
-- morgan → Logging requests.
-- helmet → Security headers.
-- compression → Gzip compression.
-- Why interviewers ask: To check if you know how to enhance Express apps with external tools.
-- Example:
-  const morgan = require('morgan');
-  app.use(morgan('dev')); // logs requests
-
-40. Body Parser
-
-- Detailed Explanation:
-  Before Express v4.16, body-parser was used to parse request bodies. Now, express.json() and express.urlencoded() replace it.
-- Still used in legacy projects.
-- Why interviewers ask: To see if you know the evolution of Express middleware.
-- Example:
-  const bodyParser = require('body-parser');
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended:true}));
-
-41. Cookie Parser
-
-- Detailed Explanation:
-  cookie-parser middleware parses cookies attached to client requests. It populates req.cookies.
-- Useful for authentication, sessions, personalization.
-- Why interviewers ask: To check if you can handle cookies in web apps.
-- Example:
-  const cookieParser = require('cookie-parser');
-  app.use(cookieParser());
-
-app.get('/cookies',(req,res)=>{
-console.log(req.cookies);
-res.send("Cookies parsed");
-});
-
-42. CORS (Cross-Origin Resource Sharing)
-
-- Detailed Explanation:
-  CORS is a mechanism that allows servers to specify which origins (domains) can access their resources.
-- Problem solved: Browsers block requests from different origins by default (same-origin policy).
-- Why interviewers ask: To check if you know how to enable cross-domain communication in APIs.
-- Example:
-  const cors = require('cors');
-  app.use(cors()); // allows all origins
-
-// Restrict to specific origin
-app.use(cors({origin:'http://example.com'}));
-
-43. MVC (Model-View-Controller)
-
-- Detailed Explanation:
-  MVC is a design pattern used to structure applications into three interconnected components:
-- Model → Represents the data and business logic. Handles database operations.
-- View → Represents the UI (HTML, templates). Displays data to the user.
-- Controller → Handles requests, processes input, and decides which view/model to use.
-- Advantages: Separation of concerns, easier maintenance, scalability.
-- Why interviewers ask: To check if you can design applications with clean architecture.
-- Example (Express MVC structure):
-  project/
-  ├── models/user.js
-  ├── views/index.ejs
-  ├── controllers/userController.js
-  └── app.js
-
-// controllers/userController.js
-exports.getUser = (req,res)=>{
-res.render('index',{name:"Prashanth"});
+**Simple Example:**
+```javascript
+// Exporting
+module.exports = function greet(name) {
+    return `Hello ${name}`;
 };
 
-44. Template Engine in Express
+// or
+exports.sayHello = function(name) {
+    return `Hello ${name}`;
+};
 
-- Detailed Explanation:
-  Template engines allow rendering dynamic HTML by embedding JS logic inside templates.
-- Popular engines: EJS, Pug, Handlebars.
-- Use case: Server-side rendering of HTML pages with dynamic data.
-- Why interviewers ask: To check if you know how to integrate frontend with backend.
-- Example (setup):
-  app.set('view engine','ejs');
-  app.get('/',(req,res)=>res.render('index',{title:"Home Page"}));
+// Importing
+const greet = require('./greet');
+const { sayHello } = require('./greet');
+```
 
-45. EJS in Express
+---
 
-- Detailed Explanation:
-  EJS (Embedded JavaScript) is a template engine that lets you embed JS code inside HTML.
-- Syntax:
-- <%= variable %> → Outputs value.
-- <% code %> → Executes JS code without output.
-- Why interviewers ask: To test if you can render dynamic content in views.
-- Example:
-  <!-- views/index.ejs -->
-  <html>
-    <body>
-      <h1>Hello <%= name %></h1>
-    </body>
-  </html>
+## **6. Core Modules**
+**Interview Question:** "Name some Node.js core modules"
+
+**Deep Explanation:** Built-in modules that come with Node.js installation. No need to install via npm.
+
+**Simple Examples:**
+```javascript
+// fs - File System
+const fs = require('fs');
+fs.readFile('file.txt', 'utf8', (err, data) => {
+    console.log(data);
+});
+
+// path - Path manipulation
+const path = require('path');
+console.log(path.join('/users', 'john', 'file.txt'));
+
+// http - HTTP server
+const http = require('http');
+
+// os - System info
+const os = require('os');
+console.log('CPU Cores:', os.cpus().length);
+```
+
+---
+
+## **7. NPM Modules**
+**Interview Question:** "What is NPM and how does it work?"
+
+**Deep Explanation:** Node Package Manager - tool for installing and managing third-party packages.
+
+**Simple Examples:**
+```bash
+# Basic commands
+npm init                    # Create package.json
+npm install express         # Install package
+npm install express --save  # Install + save to dependencies
+npm install nodemon --save-dev # Install as dev dependency
+npm update express          # Update package
+npm uninstall express       # Remove package
+```
+
+```json
+// package.json structure
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.0"
+  }
+}
+```
+
+---
+
+## **8. Custom Modules**
+**Interview Question:** "How to create custom modules?"
+
+**Deep Explanation:** Create your own modules to organize code. Export using module.exports, import using require().
+
+**Simple Example:**
+```javascript
+// database.js
+const users = [];
+
+module.exports = {
+    addUser: (name) => {
+        users.push(name);
+        return users;
+    },
+    getUsers: () => users
+};
 
 // app.js
-app.set('view engine','ejs');
-app.get('/',(req,res)=>res.render('index',{name:"Prashanth"}));
+const db = require('./database');
+db.addUser('John');
+console.log(db.getUsers()); // ['John']
+```
 
-46. Authentication vs Authorization
+---
 
-- Detailed Explanation:
-- Authentication → Process of verifying who a user is.
-- Example: Login with username/password, biometrics, OAuth.
-- Authorization → Process of verifying what a user can access.
-- Example: Admin vs regular user permissions.
-- Key Difference: Authentication = identity, Authorization = access rights.
-- Why interviewers ask: To test if you understand security fundamentals in web apps.
-- Example:
-  // Authentication (login)
-  app.post('/login',(req,res)=>{
-  if(req.body.username==="admin" && req.body.password==="123"){
-  res.send("Authenticated");
-  } else {
-  res.status(401).send("Unauthorized");
-  }
-  });
+## **9. ReadLine**
+**Interview Question:** "How to take user input in Node.js?"
 
-// Authorization (role check)
-app.get('/admin',(req,res)=>{
-const role = "user"; // example role
-if(role==="admin"){
-res.send("Welcome Admin");
-} else {
-res.status(403).send("Forbidden");
-}
+**Deep Explanation:** The readline module provides interface for reading from readable streams (like terminal).
+
+**Simple Example:**
+```javascript
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
 });
+
+rl.question('What is your name? ', (name) => {
+    console.log(`Hello, ${name}!`);
+    rl.close();
+});
+```
+
+---
+
+## **10. File System Module**
+**Interview Question:** "How to read/write files in Node.js?"
+
+**Deep Explanation:** fs module handles file operations. Has both synchronous and asynchronous methods.
+
+**Simple Examples:**
+```javascript
+const fs = require('fs');
+
+// Read file
+fs.readFile('file.txt', 'utf8', (err, data) => {
+    if (err) throw err;
+    console.log(data);
+});
+
+// Write file
+fs.writeFile('output.txt', 'Hello World', (err) => {
+    if (err) throw err;
+    console.log('File written');
+});
+
+// Append to file
+fs.appendFile('log.txt', '\nNew entry', (err) => {
+    if (err) throw err;
+});
+```
+
+---
+
+## **11. Write Operations**
+**Interview Question:** "Different ways to write files?"
+
+**Simple Examples:**
+```javascript
+const fs = require('fs');
+
+// 1. Overwrite entire file
+fs.writeFile('data.txt', 'New content', (err) => {});
+
+// 2. Append to file
+fs.appendFile('log.txt', '\nNew line', (err) => {});
+
+// 3. Write synchronously
+fs.writeFileSync('sync.txt', 'Content');
+
+// 4. Stream for large files
+const writeStream = fs.createWriteStream('large.txt');
+writeStream.write('Line 1\n');
+writeStream.write('Line 2\n');
+writeStream.end();
+```
+
+---
+
+## **12. Async Programming**
+**Interview Question:** "Explain async programming in Node.js"
+
+**Deep Explanation:** Node.js is non-blocking. Uses callbacks, promises, async/await for async operations.
+
+**Simple Examples:**
+```javascript
+// Callback
+fs.readFile('file.txt', 'utf8', (err, data) => {
+    console.log(data);
+});
+
+// Promise
+const readFilePromise = (path) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf8', (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+        });
+    });
+};
+
+// Async/Await
+async function readData() {
+    try {
+        const data = await readFilePromise('file.txt');
+        console.log(data);
+    } catch (err) {
+        console.error(err);
+    }
+}
+```
+
+---
+
+## **13. Phases of Event Loop**
+**Interview Question:** "Explain Node.js event loop phases"
+
+**Deep Explanation:** Event loop has 6 phases that execute in order:
+1. Timers (setTimeout, setInterval)
+2. Pending callbacks
+3. Idle, prepare
+4. Poll (I/O operations)
+5. Check (setImmediate)
+6. Close callbacks
+
+**Simple Example:**
+```javascript
+console.log('Start');
+
+setTimeout(() => console.log('Timer'), 0);
+setImmediate(() => console.log('Immediate'));
+Promise.resolve().then(() => console.log('Promise'));
+process.nextTick(() => console.log('Next Tick'));
+
+console.log('End');
+
+// Output order:
+// Start
+// End
+// Next Tick
+// Promise
+// Timer
+// Immediate
+```
+
+---
+
+## **14. Node Architecture**
+**Interview Question:** "Explain Node.js architecture"
+
+**Deep Explanation:**
+```
+Your Code → V8 Engine → Event Loop → LibUV → OS
+```
+
+**Key Components:**
+- V8: Executes JavaScript
+- LibUV: Handles async operations
+- Event Loop: Manages execution order
+- Thread Pool: For expensive operations
+
+---
+
+## **15. ThreadPool**
+**Interview Question:** "Does Node.js use threads?"
+
+**Deep Explanation:** Yes! Node.js has a thread pool (default 4 threads) managed by libuv. Used for:
+- File system operations
+- DNS lookups
+- Crypto operations
+- Zlib compression
+
+**Simple Example:**
+```javascript
+// Increase thread pool size
+process.env.UV_THREADPOOL_SIZE = 8;
+
+// Crypto operations use thread pool
+const crypto = require('crypto');
+crypto.pbkdf2('password', 'salt', 100000, 64, 'sha512', (err, key) => {
+    console.log('Done');
+});
+```
+
+---
+
+## **16. Express.js**
+**Interview Question:** "What is Express.js?"
+
+**Deep Explanation:** Minimal web framework for Node.js. Simplifies server creation, routing, middleware.
+
+**Simple Example:**
+```javascript
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Hello Express!');
+});
+
+app.listen(3000, () => {
+    console.log('Server started on port 3000');
+});
+```
+
+---
+
+## **17. Applications of Express**
+**Interview Question:** "What can you build with Express?"
+
+**Deep Explanation:**
+- REST APIs
+- Web applications
+- Real-time applications
+- Microservices
+- Static file servers
+- Proxy servers
+
+**Simple Examples:**
+```javascript
+// REST API
+app.get('/api/users', (req, res) => {
+    res.json([{id: 1, name: 'John'}]);
+});
+
+// Static files
+app.use(express.static('public'));
+
+// Template engine
+app.set('view engine', 'ejs');
+app.get('/profile', (req, res) => {
+    res.render('profile', {user: 'John'});
+});
+```
+
+---
+
+## **18. Request Object in Express**
+**Interview Question:** "What is req object in Express?"
+
+**Deep Explanation:** Contains client request information.
+
+**Simple Example:**
+```javascript
+app.get('/user/:id', (req, res) => {
+    console.log(req.params.id);   // Route parameter
+    console.log(req.query.name);  // Query parameter
+    console.log(req.body);        // Request body (needs middleware)
+    console.log(req.headers);     // Request headers
+    console.log(req.ip);          // Client IP
+});
+```
+
+---
+
+## **19. Properties of Request Object**
+**Interview Question:** "Name some req properties"
+
+**Simple Examples:**
+```javascript
+req.method      // HTTP method (GET, POST, etc.)
+req.url         // Request URL
+req.path        // URL path
+req.query       // Query parameters
+req.params      // Route parameters
+req.body        // Request body
+req.headers     // Request headers
+req.cookies     // Cookies
+req.ip          // Client IP
+req.protocol    // HTTP or HTTPS
+req.hostname    // Host name
+```
+
+---
+
+## **20. Response Object in Express**
+**Interview Question:** "What is res object in Express?"
+
+**Deep Explanation:** Used to send response to client.
+
+**Simple Examples:**
+```javascript
+app.get('/', (req, res) => {
+    res.send('Hello');              // Send text
+    res.json({message: 'Hello'});   // Send JSON
+    res.status(201).send('Created'); // Set status
+    res.redirect('/new-path');      // Redirect
+    res.sendFile('file.html');      // Send file
+    res.cookie('token', 'abc123');  // Set cookie
+    res.clearCookie('token');       // Clear cookie
+});
+```
+
+---
+
+## **21. Properties of Response Object**
+**Interview Question:** "Name some res properties"
+
+**Simple Examples:**
+```javascript
+res.status(code)      // Set status code
+res.set(field, value) // Set response header
+res.get(field)        // Get response header
+res.cookie(name, value) // Set cookie
+res.clearCookie(name)   // Clear cookie
+res.type(type)        // Set Content-Type
+res.send(body)        // Send response
+res.json(body)        // Send JSON
+res.redirect(url)     // Redirect
+```
+
+---
+
+## **22. HTTP**
+**Interview Question:** "What is HTTP?"
+
+**Deep Explanation:** HyperText Transfer Protocol - foundation of web communication. Request-Response protocol.
+
+**Simple Example:**
+```javascript
+// HTTP Request Structure:
+// GET /index.html HTTP/1.1
+// Host: example.com
+// User-Agent: browser
+
+// HTTP Response Structure:
+// HTTP/1.1 200 OK
+// Content-Type: text/html
+// 
+// <html>...</html>
+```
+
+---
+
+## **23. URL**
+**Interview Question:** "What is URL structure?"
+
+**Deep Explanation:** Uniform Resource Locator - address of resource on web.
+
+**Simple Example:**
+```
+https://user:pass@example.com:8080/path?query=string#fragment
+└─┬─┘ └─┬──┘└─┬──┘└──┬──┘└─┬┘└──┬──┘└─┬────┘ └──┬───┘
+Scheme  User Pass   Host  Port Path   Query   Fragment
+```
+
+```javascript
+const url = new URL('https://example.com/path?name=John');
+console.log(url.hostname);  // example.com
+console.log(url.pathname);  // /path
+console.log(url.searchParams.get('name')); // John
+```
+
+---
+
+## **24. API**
+**Interview Question:** "What is an API?"
+
+**Deep Explanation:** Application Programming Interface - set of rules for software communication.
+
+**Simple Example:**
+```javascript
+// REST API endpoints
+app.get('/api/users', (req, res) => {
+    // Get all users
+});
+
+app.post('/api/users', (req, res) => {
+    // Create user
+});
+
+app.get('/api/users/:id', (req, res) => {
+    // Get user by ID
+});
+```
+
+---
+
+## **25. REST API**
+**Interview Question:** "What is REST API?"
+
+**Deep Explanation:** Representational State Transfer - architectural style for APIs. Uses HTTP methods for CRUD operations.
+
+**Simple Example:**
+```javascript
+// CRUD Operations:
+// CREATE  - POST   /users
+// READ    - GET    /users or /users/:id
+// UPDATE  - PUT    /users/:id
+// DELETE  - DELETE /users/:id
+
+app.get('/users', getUsers);           // Read all
+app.get('/users/:id', getUser);        // Read one
+app.post('/users', createUser);        // Create
+app.put('/users/:id', updateUser);     // Update
+app.delete('/users/:id', deleteUser);  // Delete
+```
+
+---
+
+## **26. HTTP Headers**
+**Interview Question:** "What are HTTP headers?"
+
+**Deep Explanation:** Metadata sent with requests/responses. Provide additional information.
+
+**Simple Examples:**
+```javascript
+// Common headers
+req.headers['user-agent']    // Client browser
+req.headers['content-type']  // Request format
+req.headers['authorization'] // Auth token
+
+// Setting headers
+res.set('Content-Type', 'application/json');
+res.set('Cache-Control', 'no-cache');
+```
+
+---
+
+## **27. Types of HTTP Headers**
+**Interview Question:** "Types of HTTP headers?"
+
+**Deep Explanation:**
+1. **General**: Apply to both request/response (Date, Connection)
+2. **Request**: Sent by client (Accept, Authorization)
+3. **Response**: Sent by server (Server, Set-Cookie)
+4. **Entity**: Describe body (Content-Type, Content-Length)
+
+---
+
+## **28. Content-Type**
+**Interview Question:** "What is Content-Type header?"
+
+**Deep Explanation:** Specifies media type of the content.
+
+**Simple Examples:**
+```javascript
+// Common Content-Types
+'text/html'                     // HTML
+'application/json'              // JSON
+'application/xml'               // XML
+'text/plain'                    // Plain text
+'multipart/form-data'           // File upload
+'application/x-www-form-urlencoded' // Form data
+
+// Setting Content-Type
+res.set('Content-Type', 'application/json');
+```
+
+---
+
+## **29. Common Content-Type Values**
+**Interview Question:** "Name common Content-Type values"
+
+**Simple List:**
+- `application/json` - JSON data
+- `text/html` - HTML content
+- `text/plain` - Plain text
+- `application/xml` - XML data
+- `multipart/form-data` - File uploads
+- `application/pdf` - PDF files
+- `image/jpeg` - JPEG images
+
+---
+
+## **30. HTTP Methods**
+**Interview Question:** "Explain HTTP methods"
+
+**Deep Explanation:**
+- **GET**: Retrieve data (Safe, Idempotent)
+- **POST**: Create data (Not safe, Not idempotent)
+- **PUT**: Update/replace data (Idempotent)
+- **PATCH**: Partial update (Not idempotent)
+- **DELETE**: Remove data (Idempotent)
+- **HEAD**: Get headers only
+- **OPTIONS**: Get allowed methods
+
+**Simple Example:**
+```javascript
+app.get('/users', getUsers);
+app.post('/users', createUser);
+app.put('/users/:id', updateUser);
+app.patch('/users/:id', updatePartial);
+app.delete('/users/:id', deleteUser);
+```
+
+---
+
+## **31. HTTP Status Codes**
+**Interview Question:** "Explain HTTP status codes"
+
+**Deep Explanation:**
+- **1xx**: Informational (100 Continue)
+- **2xx**: Success (200 OK, 201 Created)
+- **3xx**: Redirection (301 Moved, 304 Not Modified)
+- **4xx**: Client Error (400 Bad Request, 404 Not Found)
+- **5xx**: Server Error (500 Internal Server Error)
+
+**Simple Examples:**
+```javascript
+res.status(200).send('Success');
+res.status(201).send('Created');
+res.status(400).send('Bad Request');
+res.status(404).send('Not Found');
+res.status(500).send('Server Error');
+```
+
+---
+
+## **32. Express Middleware**
+**Interview Question:** "What is middleware in Express?"
+
+**Deep Explanation:** Functions that execute during request-response cycle. Can modify req/res, end response, or call next middleware.
+
+**Simple Example:**
+```javascript
+// Middleware function
+const logger = (req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next(); // Call next middleware
+};
+
+// Using middleware
+app.use(logger);
+```
+
+---
+
+## **33. Advantages of Middleware Functions**
+**Interview Question:** "Advantages of middleware?"
+
+**Deep Explanation:**
+1. Code reusability
+2. Separation of concerns
+3. Request/response modification
+4. Error handling
+5. Security (authentication, logging)
+6. Performance monitoring
+
+---
+
+## **34. Application-Level Middleware**
+**Interview Question:** "What is application-level middleware?"
+
+**Deep Explanation:** Middleware bound to the Express app instance using app.use() or app.METHOD().
+
+**Simple Examples:**
+```javascript
+// Global middleware (all routes)
+app.use((req, res, next) => {
+    console.log('Global middleware');
+    next();
+});
+
+// Route-specific middleware
+app.use('/admin', (req, res, next) => {
+    console.log('Admin middleware');
+    next();
+});
+```
+
+---
+
+## **35. Built-in Middleware**
+**Interview Question:** "Name built-in Express middleware"
+
+**Deep Explanation:**
+1. **express.json()** - Parse JSON bodies
+2. **express.urlencoded()** - Parse URL-encoded bodies
+3. **express.static()** - Serve static files
+4. **express.text()** - Parse text bodies
+5. **express.raw()** - Parse raw bodies
+
+**Simple Example:**
+```javascript
+app.use(express.json()); // Parse JSON
+app.use(express.urlencoded({ extended: true })); // Parse form data
+app.use(express.static('public')); // Serve static files
+```
+
+---
+
+## **36. express.static Middleware**
+**Interview Question:** "How to serve static files?"
+
+**Deep Explanation:** Serves static files (HTML, CSS, JS, images) from directory.
+
+**Simple Example:**
+```javascript
+// Serve files from 'public' folder
+app.use(express.static('public'));
+
+// File structure:
+// public/
+//   ├── index.html
+//   ├── style.css
+//   └── script.js
+
+// Access at:
+// http://localhost:3000/index.html
+// http://localhost:3000/style.css
+```
+
+---
+
+## **37. express.json Middleware**
+**Interview Question:** "How to parse JSON requests?"
+
+**Deep Explanation:** Parses incoming requests with JSON payloads. Populates req.body with parsed data.
+
+**Simple Example:**
+```javascript
+app.use(express.json()); // Must be before routes
+
+app.post('/api/users', (req, res) => {
+    // req.body contains parsed JSON
+    console.log(req.body.name);
+    console.log(req.body.email);
+    res.json({ success: true });
+});
+```
+
+---
+
+## **38. express.urlencoded() Middleware**
+**Interview Question:** "How to parse form data?"
+
+**Deep Explanation:** Parses incoming requests with URL-encoded payloads (like form submissions).
+
+**Simple Example:**
+```javascript
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/submit-form', (req, res) => {
+    // req.body contains form data
+    console.log(req.body.username);
+    console.log(req.body.password);
+    res.send('Form submitted');
+});
+```
+
+**Note:** `extended: true` allows parsing of rich objects, `extended: false` only supports strings/arrays.
+
+---
+
+## **39. Third-Party Middleware**
+**Interview Question:** "Name some third-party middleware"
+
+**Deep Explanation:** Community-created middleware installed via npm.
+
+**Simple Examples:**
+```javascript
+const morgan = require('morgan');     // Logging
+const cors = require('cors');         // CORS
+const helmet = require('helmet');     // Security headers
+const compression = require('compression'); // Compression
+
+app.use(morgan('dev'));    // Log requests
+app.use(cors());           // Enable CORS
+app.use(helmet());         // Security headers
+app.use(compression());    // Compress responses
+```
+
+---
+
+## **40. Body Parser**
+**Interview Question:** "What is body-parser?"
+
+**Deep Explanation:** Previously used to parse request bodies. Now built into Express as express.json() and express.urlencoded().
+
+**Simple Example:**
+```javascript
+// Old way (before Express 4.16)
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// New way (Express 4.16+)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+```
+
+---
+
+## **41. Cookie Parser**
+**Interview Question:** "How to handle cookies in Express?"
+
+**Deep Explanation:** Parse Cookie header and populate req.cookies.
+
+**Simple Example:**
+```javascript
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+app.get('/', (req, res) => {
+    // Read cookies
+    console.log(req.cookies);
+    
+    // Set cookie
+    res.cookie('username', 'john', { maxAge: 900000 });
+    
+    // Clear cookie
+    res.clearCookie('username');
+    
+    res.send('Cookie handled');
+});
+```
+
+---
+
+## **42. CORS (Cross-Origin Resource Sharing)**
+**Interview Question:** "What is CORS and how to enable it?"
+
+**Deep Explanation:** Security feature that allows servers to specify which origins can access resources.
+
+**Simple Example:**
+```javascript
+const cors = require('cors');
+
+// Enable CORS for all origins
+app.use(cors());
+
+// Enable for specific origin
+app.use(cors({
+    origin: 'http://example.com'
+}));
+
+// Enable with options
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
+}));
+```
+
+---
+
+## **43. MVC (Model-View-Controller)**
+**Interview Question:** "Explain MVC pattern in Express"
+
+**Deep Explanation:** Architectural pattern separating application into:
+- **Model**: Data and business logic
+- **View**: UI/presentation layer
+- **Controller**: Handles requests, processes data
+
+**Simple Example Structure:**
+```
+project/
+├── models/
+│   └── User.js
+├── views/
+│   └── index.ejs
+├── controllers/
+│   └── userController.js
+└── app.js
+```
+
+```javascript
+// Model (User.js)
+class User {
+    constructor(name, email) {
+        this.name = name;
+        this.email = email;
+    }
+}
+
+// Controller (userController.js)
+exports.getUser = (req, res) => {
+    const user = new User('John', 'john@example.com');
+    res.render('index', { user });
+};
+
+// View (index.ejs)
+<h1>Hello <%= user.name %></h1>
+```
+
+---
+
+## **44. Template Engine in Express**
+**Interview Question:** "What are template engines in Express?"
+
+**Deep Explanation:** Generate HTML dynamically by embedding JavaScript in templates.
+
+**Simple Example:**
+```javascript
+// Set template engine
+app.set('view engine', 'ejs');
+
+// Render template
+app.get('/', (req, res) => {
+    res.render('index', { 
+        title: 'Home Page',
+        user: 'John'
+    });
+});
+```
+
+---
+
+## **45. EJS in Express**
+**Interview Question:** "How to use EJS in Express?"
+
+**Deep Explanation:** Embedded JavaScript templates. Syntax: `<%= variable %>` outputs value, `<% code %>` executes JS.
+
+**Simple Example:**
+```javascript
+// Setup
+app.set('view engine', 'ejs');
+
+// Route
+app.get('/profile', (req, res) => {
+    res.render('profile', {
+        user: { name: 'John', age: 30 },
+        skills: ['JavaScript', 'Node.js', 'Express']
+    });
+});
+```
+
+```html
+<!-- profile.ejs -->
+<h1>Hello <%= user.name %></h1>
+<p>Age: <%= user.age %></p>
+
+<ul>
+  <% skills.forEach(skill => { %>
+    <li><%= skill %></li>
+  <% }) %>
+</ul>
+```
+
+---
+
+## **46. Authentication vs Authorization**
+**Interview Question:** "Difference between authentication and authorization?"
+
+**Deep Explanation:**
+- **Authentication**: Who are you? (Login)
+- **Authorization**: What can you do? (Permissions)
+
+**Simple Example:**
+```javascript
+// Authentication (Login)
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === 'admin' && password === '123') {
+        res.send('Authenticated');
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+});
+
+// Authorization (Check role)
+app.get('/admin', (req, res) => {
+    const userRole = 'user'; // Get from session/token
+    if (userRole === 'admin') {
+        res.send('Admin panel');
+    } else {
+        res.status(403).send('Forbidden');
+    }
+});
+```
+
+**Summary:**
+- **401 Unauthorized**: Authentication failed
+- **403 Forbidden**: Authenticated but not authorized
