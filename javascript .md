@@ -1,4 +1,4 @@
-## Complete JavaScript Concepts with Deep Theory & Simple Examples
+
 
 ### **1. JavaScript**
 **Theory:** JavaScript is a single-threaded, prototype-based, multi-paradigm language with first-class functions. It uses just-in-time compilation and has a concurrency model based on an event loop.
