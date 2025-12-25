@@ -1,5 +1,3 @@
-# Node.js & Express.js - Deep Explanation with Simple Examples
-
 ## **1. Node.js**
 **Interview Question:** "What is Node.js and why is it popular?"
 
