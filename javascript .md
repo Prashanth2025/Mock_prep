@@ -1033,3 +1033,17 @@ console.log(one); // Output: 1
 console.log(two); // Output: 2
 console.log(three); // Output: 3
 ```
+## 98.Map Method
+Map Method
+Explanation
+The map() method creates a new array by applying a function to each element of an array. It doesn't change the original array.
+
+```javascript
+array.map(callback(currentValue, index, array), thisArg)
+```
+
+```javascript
+const numbers = [1, 2, 3];
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6]
+```
