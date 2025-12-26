@@ -1,11 +1,3 @@
-Perfect, Prashanth 👌. You want **everything in one go** with **Markdown format** — a full **JavaScript Interview Cheat Sheet** covering all 114 topics with syntax + simple program examples, cleanly formatted for readability. Here it is:
-
----
-
-# 📘 JavaScript Interview Cheat Sheet (Syntax + Examples)
-
----
-
 ## 1. JavaScript
 
 ```js
