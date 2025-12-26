@@ -582,10 +582,6 @@ document.querySelector(".class");
 
 ---
 
-Great, Prashanth 👍 — let’s continue building your **JavaScript Interview Cheat Sheet** from **Topic 65 onward**. I’ll keep the same **Markdown format with syntax + simple program examples** for clarity and readability.
-
----
-
 ## 65. JavaScript Events
 
 ```js
