@@ -1,10 +1,4 @@
-Got it 👍 — you want **detailed, interview-style answers** for each React topic, with **syntax + small programs**. Since you’ve listed **60 topics**, the best way to make this digestible is to break them into **chunks of 10 topics**. That way, each section is thorough but not overwhelming.  
-
-Here’s the **detailed breakdown for Topics 1–10**:
-
----
-
-# 📘 React Interview Prep (Detailed Answers: Topics 1–10)
+#  React Interview Prep (Detailed Answers: Topics 1–10)
 
 ---
 
